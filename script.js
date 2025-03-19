@@ -29,13 +29,24 @@ function updateActionButton() {
 
 // Función principal de cifrado/descifrado
 function processText() {
+    console.log("Botón clicado, procesando texto...");
     const text = inputText.value.trim();
-    if (!text) return;
+    if (!text) {
+        console.log("Texto vacío, no se procesa.");
+        return;
+    }
 
     const shift = Math.min(Math.max(parseInt(shiftInput.value) || 3, 1), 25);
     const mode = modeSelect.value;
     const charMode = charModeSelect.value;
+    console.log("Texto:", text);
+    console.log("Desplazamiento:", shift);
+    console.log("Modo:", mode);
+    console.log("CharMode:", charMode);
+    console.log("Es encriptar:", isEncryptMode);
+
     const result = applyCaesarCipher(text, shift, !isEncryptMode, mode, charMode);
+    console.log("Resultado:", result);
     
     outputText.style.animation = 'none'; // Resetear animación
     setTimeout(() => outputText.style.animation = 'fadeIn 0.3s ease forwards', 10);
@@ -52,35 +63,17 @@ function toggleMode() {
 // Lógica del cifrado César
 function applyCaesarCipher(text, shift, isDecrypt, mode, charMode) {
     let finalShift = isDecrypt ? -shift : shift;
-    
+    console.log("Shift final:", finalShift);
+
     return text.split('').map(char => {
-        let base, range;
-        
-        if (charMode === 'letters' && !/[a-zA-Z]/.test(char)) return char;
-        else if (charMode === 'all') {
-            if (/[a-zA-Z]/.test(char)) {
-                base = char === char.toUpperCase() ? 65 : 97;
-                range = 26;
-            } else if (/[0-9]/.test(char)) {
-                base = 48; // 0-9
-                range = 10;
-            } else if (/[!@#$%^&*(),.?":{}|<>]/.test(char)) {
-                base = 33; // Caracteres especiales básicos
-                range = 15;
-            } else {
-                return char;
-            }
-        } else {
-            return char;
+        if (charMode === 'letters' && /[a-zA-Z]/.test(char)) {
+            const base = char === char.toUpperCase() ? 65 : 97;
+            const code = char.charCodeAt(0);
+            const newCode = (code - base + finalShift + 26) % 26 + base;
+            console.log(`${char} -> ${String.fromCharCode(newCode)}`);
+            return String.fromCharCode(newCode);
         }
-
-        let currentShift = finalShift;
-        if (mode === 'reverse') currentShift = -finalShift;
-        else if (mode === 'random') currentShift = Math.floor(Math.random() * range) + 1;
-
-        const code = char.charCodeAt(0);
-        const newCode = (code - base + currentShift + range) % range + base;
-        return String.fromCharCode(newCode);
+        return char; // Si no es letra o charMode no es 'letters', no cambia
     }).join('');
 }
 
