@@ -6,6 +6,7 @@
     --button-hover: #5a24d1;
     --history-bg: #f8f9fa;
     --border-color: #ddd;
+    --button-text-color: white; /* Nuevo color para texto de botones */
 }
 
 body.dark-mode {
@@ -16,6 +17,7 @@ body.dark-mode {
     --button-hover: #6c40e6;
     --history-bg: #3d3d3d;
     --border-color: #555;
+    --button-text-color: white; /* Asegurar contraste en modo oscuro */
 }
 
 * {
@@ -91,6 +93,20 @@ textarea {
     to { opacity: 1; }
 }
 
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.error {
+    color: #ff3333;
+    font-size: 0.9em;
+    margin-top: -8px;
+    margin-bottom: 10px;
+    animation: shake 0.4s ease;
+}
+
 .controls {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -109,7 +125,7 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    color: white;
+    color: var(--button-text-color); /* Usar variable para color del texto */
     transition: background 0.3s, transform 0.2s;
 }
 
@@ -117,66 +133,77 @@ button:hover {
     transform: scale(1.05);
 }
 
-#actionBtn.encrypt {
+#caesarActionBtn.encrypt, #morseActionBtn.encrypt {
     background: #007bff; /* Azul para encriptar */
 }
 
-#actionBtn.decrypt {
+#caesarActionBtn.decrypt, #morseActionBtn.decrypt {
     background: #28a745; /* Verde para desencriptar */
 }
 
-#actionBtn.encrypt:hover {
+#caesarActionBtn.encrypt:hover, #morseActionBtn.encrypt:hover {
     background: #0056b3;
 }
 
-#actionBtn.decrypt:hover {
+#caesarActionBtn.decrypt:hover, #morseActionBtn.decrypt:hover {
     background: #218838;
 }
 
-#toggleModeBtn {
+#caesarToggleBtn, #morseToggleBtn {
     background: #6c757d;
 }
 
-#toggleModeBtn:hover {
+#caesarToggleBtn:hover, #morseToggleBtn:hover {
     background: #5a6268;
 }
 
-#copyBtn {
+#caesarCopyBtn, #morseCopyBtn {
     background: #28a745;
 }
 
-#copyBtn:hover {
+#caesarCopyBtn:hover, #morseCopyBtn:hover {
     background: #218838;
 }
 
-#copyBtn.copied {
+#caesarCopyBtn.copied, #morseCopyBtn.copied {
     background: #17a2b8;
     transform: scale(1.1);
 }
 
-#clearBtn {
+#caesarClearBtn, #morseClearBtn {
     background: #dc3545;
 }
 
-#clearBtn:hover {
+#caesarClearBtn:hover, #morseClearBtn:hover {
     background: #c82333;
 }
 
-#saveBtn {
+#caesarSaveBtn, #morseSaveBtn {
     background: #17a2b8;
 }
 
-#saveBtn:hover {
+#caesarSaveBtn:hover, #morseSaveBtn:hover {
     background: #138496;
 }
 
 #themeBtn {
     background: #ffc107;
-    color: #333;
+    color: #333; /* Texto siempre oscuro en este botón para contraste */
 }
 
 #themeBtn:hover {
     background: #e0a800;
+}
+
+#clearHistoryBtn {
+    background: #dc3545;
+    margin-top: 10px;
+    font-size: 0.9em;
+    padding: 5px 10px;
+}
+
+#clearHistoryBtn:hover {
+    background: #c82333;
 }
 
 .history {
@@ -198,10 +225,57 @@ button:hover {
     word-break: break-all;
     cursor: pointer;
     transition: background 0.2s;
+    color: var(--text-color); /* Asegurar que el color del texto se adapte al tema */
 }
 
 #historyList li:hover {
     background: rgba(0,0,0,0.1);
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    border-bottom: 3px solid transparent;
+}
+
+.tab.active {
+    border-bottom: 3px solid #007bff;
+    font-weight: bold;
+}
+
+/* Ocultar secciones inactivas */
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    transform: translateX(150%);
+    transition: transform 0.3s ease;
+}
+
+.notification.show {
+    transform: translateX(0);
 }
 
 @media (max-width: 480px) {

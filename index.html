@@ -3,61 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cifrado César Avanzado</title>
+    <title>Aplicación de Cifrado Múltiple</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Cifrado César Avanzado</h1>
+        <h1>Aplicación de Cifrado Múltiple</h1>
         
-        <div class="input-group">
-            <label for="inputText">Texto de entrada:</label>
-            <textarea id="inputText" rows="4" placeholder="Escribe tu mensaje aquí"></textarea>
+        <div class="tabs">
+            <button class="tab active" data-tab="caesar">Cifrado César</button>
+            <button class="tab" data-tab="morse">Código Morse</button>
         </div>
-
-        <div class="controls">
+        
+        <!-- Sección Cifrado César -->
+        <div id="caesar" class="section active">
             <div class="input-group">
-                <label for="shift">Desplazamiento (1-25):</label>
-                <input type="number" id="shift" min="1" max="25" value="3">
+                <label for="caesarInput">Texto de entrada:</label>
+                <textarea id="caesarInput" rows="4" placeholder="Escribe tu mensaje aquí"></textarea>
+                <div id="caesarInputError" class="error" style="display: none;"></div>
+            </div>
+            
+            <div class="controls">
+                <div class="input-group">
+                    <label for="shift">Desplazamiento (0-25):</label>
+                    <input type="number" id="shift" min="0" max="25" value="3">
+                    <div id="shiftError" class="error" style="display: none;"></div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="caesarMode">Modo:</label>
+                    <select id="caesarMode">
+                        <option value="normal">Normal</option>
+                        <option value="reverse">Reverso</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="charMode">Cifrar:</label>
+                    <select id="charMode">
+                        <option value="letters">Solo letras</option>
+                        <option value="all">Letras, números y especiales</option>
+                    </select>
+                </div>
             </div>
             
             <div class="input-group">
-                <label for="mode">Modo:</label>
-                <select id="mode">
-                    <option value="normal">Normal</option>
-                    <option value="reverse">Reverso</option>
-                    <option value="random">Aleatorio</option>
-                </select>
+                <label for="caesarOutput">Resultado:</label>
+                <textarea id="caesarOutput" rows="4" readonly></textarea>
             </div>
-
+            
+            <div class="buttons">
+                <button id="caesarActionBtn" class="encrypt">Encriptar</button>
+                <button id="caesarToggleBtn">Cambiar a Desencriptar</button>
+                <button id="caesarCopyBtn">Copiar</button>
+                <button id="caesarClearBtn">Limpiar</button>
+                <button id="caesarSaveBtn">Guardar</button>
+            </div>
+        </div>
+        
+        <!-- Sección Código Morse -->
+        <div id="morse" class="section">
             <div class="input-group">
-                <label for="charMode">Cifrar:</label>
-                <select id="charMode">
-                    <option value="letters">Solo letras</option>
-                    <option value="all">Letras, números y especiales</option>
-                </select>
+                <label for="morseInput">Texto de entrada:</label>
+                <textarea id="morseInput" rows="4" placeholder="Escribe texto normal o código morse (usa '.' para punto, '-' para raya y espacios para separar caracteres)"></textarea>
+                <div id="morseInputError" class="error" style="display: none;"></div>
+            </div>
+            
+            <div class="input-group">
+                <label for="morseOutput">Resultado:</label>
+                <textarea id="morseOutput" rows="4" readonly></textarea>
+            </div>
+            
+            <div class="buttons">
+                <button id="morseActionBtn" class="encrypt">Encriptar a Morse</button>
+                <button id="morseToggleBtn">Cambiar a Desencriptar</button>
+                <button id="morseCopyBtn">Copiar</button>
+                <button id="morseClearBtn">Limpiar</button>
+                <button id="morseSaveBtn">Guardar</button>
             </div>
         </div>
-
-        <div class="input-group">
-            <label for="outputText">Resultado:</label>
-            <textarea id="outputText" rows="4" readonly></textarea>
-        </div>
-
-        <div class="buttons">
-            <button id="actionBtn">Encriptar</button>
-            <button id="toggleModeBtn">Cambiar a Desencriptar</button>
-            <button id="copyBtn">Copiar</button>
-            <button id="clearBtn">Limpiar</button>
-            <button id="saveBtn">Guardar</button>
-            <button id="themeBtn">Modo Oscuro</button>
-        </div>
-
+        
+        <!-- Historial y modo oscuro (común a ambas secciones) -->
         <div class="history">
             <h3>Historial</h3>
             <ul id="historyList"></ul>
+            <button id="clearHistoryBtn">Limpiar historial</button>
         </div>
+        
+        <button id="themeBtn" style="margin-top: 20px;">Modo Oscuro</button>
     </div>
+    
+    <div class="notification" id="notification"></div>
 
     <script src="script.js"></script>
 </body>
